@@ -2,10 +2,19 @@ class HomeController < ApplicationController
   def index
     @comments=Comment.all
   end
+  
   def create
     @comment = Comment.new(body: params[:body])
-    @comment.save
+    if @comment.save
+      respond_to do |format|
+        format.js #응답을 js로 하겠다.
+      end
+    end
+  end
+  
+  def destroy
+    @comment = Comment.find(params[:id])
+    @comment.destroy
     redirect_to :back
   end
-
 end
